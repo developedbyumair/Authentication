@@ -8,4 +8,7 @@ import { CatsService } from './cats.service';
   providers: [CatsService],
   exports: [CatsService],
 })
-export class CatsModule {}
+export class CatsModule {
+  //Dependency injection
+  constructor(private catsService: CatsService) {}
+}
