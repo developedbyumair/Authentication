@@ -8,6 +8,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './common/logger.middleware';
+import { CatsController } from './cats/cats.controller';
 
 @Module({
   imports: [CatsModule],
@@ -18,7 +19,12 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      //n the example below, notice that we import the RequestMethod enum to reference the desired request method type.
-      .forRoutes({ path: 'cats', method: RequestMethod.GET });
+      // This method can take a single string, multiple strings, or a RouteInfo object identifying routes to be excluded,
+      .exclude(
+        { path: 'cats', method: RequestMethod.GET },
+        { path: 'cats', method: RequestMethod.POST },
+        'cats/(.*)',
+      )
+      .forRoutes(CatsController);
   }
 }
