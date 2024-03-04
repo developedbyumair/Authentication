@@ -27,7 +27,13 @@ export class CatsController {
   }
   @Get(':id')
   // if we used string so they can throw or an exception is thrown before the route handler is called.
-  async findOne(@Param('id', ParseIntPipe) id: number) {
+  async findOne(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ) {
     return this.catsService.findOne(id);
   }
 }
