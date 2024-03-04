@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { CatsService } from './cats.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  HttpStatus,
+  HttpException,
+  Param,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { CreateCatDto } from './dto/dto';
+import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';
 
 @Controller('cats')
@@ -15,5 +24,10 @@ export class CatsController {
   @Get()
   async findAll(): Promise<Cat[]> {
     return this.catsService.findAll();
+  }
+  @Get(':id')
+  // if we used string so they can throw or an exception is thrown before the route handler is called.
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.catsService.findOne(id);
   }
 }
